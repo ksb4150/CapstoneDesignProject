@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>CAN ID Analysis</title>
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Chango">
+    <link rel="stylesheet" type="text/css" href="strange_design.css?after">
+    <style>
+      #strange{
+        word-break: break-all;
+        line-height: 60px;
+        font-size: 24px;
+        word-break: keep-all;
+        word-wrap: break-word;
+      }
+    </style>
+  </head>
+  <script type = "text/javascript">
+
+
+    var badID = JSON.parse(localStorage.getItem("badID"));
+    var bad_ID = badID.join(" ");
+
+  // var n=0;
+  // for(var num = 0;num<=8;num++){
+  //   var badID3 = badID.splice(61+n,0,'<br>');
+  //   n+=31;
+  // }
+  // console.log(badID);
+
+  </script>
+  <body>
+    <div id ='header'>
+        <div id ='top_left'>
+           <div class='top_left_f'></div>
+        </div>
+        <div id ='top_center'>
+          <div class = 'top_center_f'>
+            <div id ='state'>이상 데이터 ID 탐지 결과</div>
+          </div>
+        </div>
+        <div id = 'top_right'>
+           Capstone Design<br>team 3
+        </div>
+     </div>
+     <div id = 'middle' style="height: 87%">
+       <div class='middle_id'>
+         <div id=strange></div>
+       </div>
+     </div>
+  </body>
+  <script>
+    document.getElementById('strange').innerHTML=bad_ID;
+  </script>
+</html>
