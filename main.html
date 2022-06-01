@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>CAN ID Analysis</title>
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Chango">
+    <link rel="stylesheet" type="text/css" href="main_design.css?after">
+    <script type = "text/javascript">
+
+      google.load('visualization', '1', {packages: ['corechart']}); //구글차트 라이브러리 로드
+      google.charts.setOnLoadCallback(Drawchart); //로딩 후 Drawchart 호출
+
+
+      localStorage.clear();
+      var maxSec = 0;
+      let EndFlag = false;
+      var txt = "";
+      var Rlight = "Right light ON";
+      var Llight = "Left light ON"
+      var Hlight = "Hazard light(s) ON";
+      var Faccel = "full acceleration";
+      var Brake = "Brake";
+      var Drive = "Driving";
+      var Num = 0;
+
+      var timer;
+      var resultArr = new Array();
+
+      var Rlight1ID = new Array();
+      var Rlight2ID = new Array();
+      var LlightID = new Array();
+      var hazardID = new Array();
+      var accelID = new Array();
+      var brakeID = new Array();
+
+      //var total = new Array();
+      //var total_catch = new Array();
+
+          function Drawchart() {
+            $.ajax ({
+              url : 'Chartdata.php',
+              //dataType : "json",
+              async : false,
+              success : function(result) {
+                resultArr = JSON.parse(result);
+                var len = resultArr.length;
+                var catchdata = new Array(); //시간과 flag 1인 ID를 catch하기 위한 배열
+                localStorage.clear(); //스토리지 비우기
+
+                for (var n=1; n<len; n++) { //최대 시간을 얻기 위한 for
+                    if(maxSec == 0) {
+                      maxSec = resultArr[n][0];
+                    }
+                    if(maxSec < resultArr[n][0]) {
+                      maxSec = resultArr[n][0];
+                    }
+                } //end for
+
+                //flag가 1인 ID 배열에 push
+                for (var z=1; z<len; z++) {
+                  //if(resultArr[z][3] == 0 || resultArr[z][3] == 1) {
+                  if(resultArr[z][3] > 0) { //flag값이 0이상이면
+                      catchdata.push(resultArr[z][1]); //catchdata 배열에 ID 넣기
+                      //total_catch.push(resultArr[z][1]);
+                  }
+                } //end for
+
+                /*if(parseFloat(maxSec)<=522.0000){
+                  total.push(...total_catch);
+                }*/
+                if (10.0004 <= parseFloat(maxSec) && parseFloat(maxSec) <= 15.6702){
+                  txt = maxSec.toFixed(4) + " " + Rlight;
+                  if(Num == 0) {
+                    //Rlight1ID.push(Rlight);
+                    Num++;
+                  }
+                  Rlight1ID.push(...catchdata);
+
+                  //console.log("Rlight1ID" + Rlight1ID);
+                } else if (30.0012 <= parseFloat(maxSec) && parseFloat(maxSec) <= 35.5012) {
+                  txt = maxSec.toFixed(4) + " " + Rlight;
+                  if(Num == 1) {
+                    //Rlight2ID.push(Rlight);
+                    Num++;
+                  }
+                  Rlight2ID.push(...catchdata);
+                  //console.log(Rlight2ID);
+                }  else if (50.0020 <= parseFloat(maxSec) && parseFloat(maxSec) <= 55.7002) {
+                  txt = maxSec.toFixed(4) + " " + Llight;
+                  if(Num == 2) {
+                    //leftID.push(Llight);
+                    Num++;
+                  }
+                  LlightID.push(...catchdata);
+                 //console.log(leftID);
+               } else if (300.1200 <= parseFloat(maxSec) && parseFloat(maxSec) <= 322.0080) {
+                  txt = maxSec.toFixed(4) + " " + Hlight;
+                  if(Num == 3) {
+                    //hazardID.push(Hlight);
+                    Num++;
+                  }
+                  hazardID.push(...catchdata);
+                  //console.log(hazardID);
+                } else if (480.1920 <= parseFloat(maxSec) && parseFloat(maxSec) <= 495.1970) {
+                  txt = maxSec.toFixed(4) + " " + Faccel;
+                  if(Num == 4) {
+                    //accelID.push(Faccel);
+                    Num++;
+                  }
+                  accelID.push(...catchdata);
+                  //console.log(accelID);
+                } else if (495.1980 <= parseFloat(maxSec) && parseFloat(maxSec) <= 522.0000) { //520700.0
+                  txt = maxSec.toFixed(4) + " " + Brake;
+                  if(Num == 5) {
+                    //brakeID.push(Brake);
+                    Num++;
+                  }
+                  //console.log(Num);
+                  brakeID.push(...catchdata);
+                } else {
+                  txt = maxSec.toFixed(4) + " " + Drive;
+                }
+
+                //chart에 알맞는 데이터를 넣기
+                var data = new google.visualization.DataTable();
+                  data.addColumn('string','ID');
+                  data.addColumn('number', 'Count');
+                  data.addColumn('number', 'Flag');
+
+                  for(var i=1; i<len; i++) {
+                    var ID = resultArr[i][1];
+                    var Cnt = resultArr[i][2];
+                    var Flag = resultArr[i][3];
+                    if(Cnt != 0){
+                      //console.log(ID, Cnt, Flag);
+                      data.addRows([[ID, Cnt, Flag]]);
+                    }
+                  //  console.log(data);
+                  } //chartdata for End
+
+                var options = {
+                  title : 'CAN ID Analysis',
+                  //interpolateNulls : true,
+                  chartArea : { // 차트의 여백, 차트의 크기
+                    left : 70, top : 100, bottom : 100, width : '95%', height : '100%'},
+                  legend : {position : 'top', alignment:'center'}, //범례의 위치
+                  vAxis : { // y축 사용자 정
+                    title : 'count & flag',
+                    viewWindow : { min : 0, max : 8},
+                    format : '0'}, //정수만 출력
+                  hAxis : { // x축
+                    title : 'CAN ID',
+                    titleTextStyle:{ fontName: 'Chango'},
+                    textStyle: {color: '#000', fontSize: 10},
+                    slantedText:true, slantedTextAngle : -60}, // 텍스트 기울기 true, 기울기
+                  seriesType : "bars", //차트에 그려지는 값이 bar로 나오게, 지우면 선으로 나옴
+                  bar: { groupWidth: 15 }, //bar 너비 조절
+                  colors:['#6E6E6E','#81BEF7']
+                }; //End Options
+                var chart =  new google.visualization.ComboChart(document.getElementById('chart_div'));
+                     chart.draw(data, options);
+                    window.addEventListener('resize',Drawchart,false);
+
+                document.getElementById('state').innerHTML=txt;
+                document.getElementById('footer_f').innerHTML=catchdata;
+                //console.log(Num);
+              }, //End success
+              error : function(request, error) {
+                alert("ajax1 실패");
+                alert("code: " + request.status + " message : " + request.responseText + " error : " + error);
+              }
+            }); //End Ajax
+            timer = setInterval(()=>{
+              if(!EndFlag){
+                Drawchart();
+              } // end if
+            }, 3000); // End setInterval
+          } // End drawchart
+
+          $( document ).ready(function() {
+            $('button').click(function() {
+              clearInterval(timer);
+              EndFlag = true;
+              var len = resultArr.length;
+              var maxAmt = 0;
+              var percent = 0;
+              var BadID = Array();
+
+              //if(Num > 0 || Num < 7) {
+              if(Num == 6) {
+
+                let URlight1ID = new Set(Rlight1ID);
+                let URlight2ID = new Set(Rlight2ID);
+                let UleftID = new Set(LlightID);
+                let UhazardID = new Set(hazardID);
+                let UaccelID = new Set(accelID);
+                let UbrakeID = new Set(brakeID);
+                Rlight1ID = [...URlight1ID];
+                Rlight2ID = [...URlight2ID];
+                LlightID = [...UleftID];
+                hazardID = [...UhazardID];
+                accelID = [...UaccelID];
+                brakeID = [...UbrakeID];
+
+                //let Utotal = new Set(total);
+                //total = [...Utotal];
+                /*for(var i=1; i<len; i++) {
+                  if(maxAmt == 0) {
+                    maxAmt = resultArr[i][4]; //첫번째 Amount값 maxAmt에 넣기
+                  }
+                  if(maxAmt < resultArr[i][4]){ //비교해서 더 큰 값 maxAmt에 넣기
+                    maxAmt = resultArr[i][4];
+                  }
+                }*/
+
+                for(var i=1; i<len; i++) {
+                  if(maxAmt == 0) {
+                    maxAmt = resultArr[i][4]; //첫번째 Amount값 maxAmt에 넣기
+                  }
+                  if(maxAmt < resultArr[i][4]){ //비교해서 더 큰 값 maxAmt에 넣기
+                    maxAmt = resultArr[i][4];
+                  }
+                }
+
+              percent = maxAmt * 0.01; // maxAmt의 1%값 넣기
+              //console.log(maxAmt)
+              //console.log(percent);
+              for(var i=1; i<len; i++) {
+                //if(resultArr[i][4] < 260){
+                if(resultArr[i][4] > 0 && resultArr[i][4] <= percent){ // 10%값 보다 작은 ID 배열에 넣기
+                    BadID.push(resultArr[i][1]);
+                    //console.log(resultArr[i][4]);
+                    //console.log(BadID);
+                }
+            }
+
+          localStorage.setItem("Rlight1", JSON.stringify(Rlight1ID));
+          localStorage.setItem("Rlight2", JSON.stringify(Rlight2ID));
+          localStorage.setItem("Llight", JSON.stringify(LlightID));
+          localStorage.setItem("hazardID", JSON.stringify(hazardID));
+          localStorage.setItem("accelID", JSON.stringify(accelID));
+          localStorage.setItem("brakeID", JSON.stringify(brakeID));
+          localStorage.setItem("badID", JSON.stringify(BadID));
+          //localStorage.setItem("totalID", JSON.stringify(total));
+
+          //console.log(BadID);
+          window.location.href = 'result.html';
+        } //end if
+      })
+    });
+
+    </script>
+  </head>
+  <body>
+    <div id ='header'>
+        <div id ='top_left'>
+           <div class='top_left_f'></div>
+        </div>
+        <div id ='top_center'>
+          <div class = 'top_center_f'>
+            <div id ='state'></div>
+          </div>
+        </div>
+        <div id = 'top_right'>
+           <div id="top_right_b">
+                 <button> result page </button>
+           </div>
+        </div>
+     </div>
+     <div id="chart_div" style="width: 100%; height: 70%;"></div>
+     <div id ='footer'>
+       <div id ="footer_f"></div>
+     </div>
+  </body>
+</html>
