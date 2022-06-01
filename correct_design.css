@@ -1,0 +1,63 @@
+@charset "EUC-KR";
+
+body{
+   margin: 0;
+   height: 100vh;
+   text-align: center;
+}
+
+#header{
+   display: flex;
+   height: 13%
+}
+
+#top_left{
+   width:15%;
+   display: table;
+   text-align: center;
+}
+
+.top_left_f{
+   display: table-cell;
+   vertical-align: middle;
+   background-image: url('SCH.jpg');
+   background-size: contain;
+   background-repeat: no-repeat;
+   background-position: center;
+}
+
+#top_center{
+   width: 70%;
+   background-color: pink;
+   display: table;
+}
+
+.top_center_f{
+   display: table-cell;
+   text-align: center;
+   vertical-align: middle;
+   font-size: 50px;
+}
+
+#top_right{
+   width: 15%;
+   text-align: center;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   font-size: 25px;
+}
+
+#middle{
+  display: flex;
+}
+
+.middle_id{
+  width:95%;
+  margin: auto;
+  display:table-cell;
+  text-align: left;
+  border:0.5px solid black;
+  /* word-break: keep-all;
+  word-wrap: break-word; */
+}
