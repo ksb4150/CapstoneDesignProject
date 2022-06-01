@@ -1,0 +1,221 @@
+@charset "EUC-KR";
+
+body{
+   margin: 0;
+   height: 100vh;
+   text-align: center;
+}
+
+#header{
+   display: flex;
+   height: 13%
+}
+
+#top_left{
+   width:15%;
+   display: table;
+   text-align: center;
+}
+
+.top_left_f{
+   display: table-cell;
+   vertical-align: middle;
+   background-image: url('SCH.jpg');
+   background-size: contain;
+   background-repeat: no-repeat;
+   background-position: center;
+}
+
+#top_center{
+   width: 70%;
+   background-color: pink;
+   display: table;
+}
+
+.top_center_f{
+   display: table-cell;
+   text-align: center;
+   vertical-align: middle;
+   font-size: 50px;
+}
+
+#top_right{
+   width: 15%;
+   text-align: center;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   font-size: 25px;
+}
+
+#middle{
+  display: flex;
+  margin-top: 1%;
+}
+
+.middle_id{
+  width:20%;
+  margin-left: 5%;
+  display:table-cell;
+  text-align: center;
+  font-size: 25px;
+}
+
+#middle_r1{
+  margin-top: 8%;
+  height: 15%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid black;
+}
+
+#middle_r2{
+  height: 15%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-right: 2px solid black;
+  border-left: 2px solid black;
+  border-bottom: 2px solid black;
+}
+
+#middle_l{
+  height: 15%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-right: 2px solid black;
+  border-left: 2px solid black;
+  border-bottom: 2px solid black;
+}
+
+#middle_h{
+  height: 15%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-right: 2px solid black;
+  border-left: 2px solid black;
+  border-bottom: 2px solid black;
+}
+
+#middle_a{
+  height: 15%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-right: 2px solid black;
+  border-left: 2px solid black;
+}
+
+#middle_b{
+  height: 15%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid black;
+}
+
+.middle_txt{
+  width:70%;
+  display: table-cell;
+  text-align: left;
+  flex-direction: column;
+  font-size: 30px;
+}
+
+#middle_one{
+  height: 14.9%;
+  margin-top: 2.3%;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  border-right: 2px solid black;
+  border-top: 2px solid black;
+  border-bottom: 2px solid black;
+  word-break: keep-all;
+  word-wrap: break-word;
+}
+
+#middle_two{
+  height: 15.1%;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  border-right: 2px solid black;
+  border-bottom: 2px solid black;
+  word-break: keep-all;
+  word-wrap: break-word;
+}
+
+#middle_three{
+  height: 15%;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  border-right: 2px solid black;
+  border-bottom: 2px solid black;
+  word-break: keep-all;
+  word-wrap: break-word;
+}
+
+#middle_four{
+  height: 15%;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  border-right: 2px solid black;
+  border-bottom: 2px solid black;
+  word-break: keep-all;
+  word-wrap: break-word;
+}
+
+#middle_five{
+  height: 14.9%;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  border-right: 2px solid black;
+  border-bottom: 2px solid black;
+  word-break: keep-all;
+  word-wrap: break-word;
+}
+
+#middle_six{
+  height: 15.1%;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  border-right: 2px solid black;
+  border-bottom: 2px solid black;
+  word-break: keep-all;
+  word-wrap: break-word;
+}
+
+#footer{
+   margin-top: 3%;
+   height:auto;
+}
+
+#footer_center{
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#footer_b button{
+   font-size: 25px;
+   padding: 10px 10px;
+   border: 2px solid black;
+   background-color: rgba(0,0,0,0);
+   color: black;
+   border-radius: 5px;
+}
+
+#footer_b button:hover{
+   color:white;
+   border: 2px solid red;
+   background-color: red;
+}
